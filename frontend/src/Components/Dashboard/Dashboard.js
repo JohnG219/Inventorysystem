@@ -55,7 +55,7 @@ function Dashboard() {
                 <p>${totalExpenses()}</p>
               </div>
               <div className="balance">
-                <h2>Total Profit</h2>
+                <h2>Total Balance</h2>
                 <p>${totalBalance()}</p>
               </div>
             </div>
@@ -109,7 +109,12 @@ const DashboardStyled = styled.div`
             display: inline-block;
           }
         }
-
+        .income {
+          color: green;
+        }
+        .expense {
+          color: red;
+        }
         .balance {
           grid-column: 2 / 4;
           display: flex;
@@ -117,6 +122,7 @@ const DashboardStyled = styled.div`
           justify-content: center;
           align-items: center;
           display: inline-block;
+          font-size: 18px;
           p {
             color: var(--color-green);
             opacity: 0.6;
