@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useGlobalContext } from "../../context/globalContext";
 import History from "../../History/History";
 import { InnerLayout } from "../../styles/Layouts";
 import { dollar } from "../../utils/Icons";
 import Chart from "../Chart/Chart";
+
 
 function Dashboard() {
   const {
@@ -17,10 +18,25 @@ function Dashboard() {
     getExpenses,
   } = useGlobalContext();
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    getIncomes();
-    getExpenses();
+    const fetchData = async () => {
+      try {
+        await Promise.all([getIncomes(), getExpenses()]);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  if (loading) {
+    return <LoadingScreen>Loading, please wait...</LoadingScreen>;
+  }
 
   return (
     <DashboardStyled>
@@ -50,6 +66,16 @@ function Dashboard() {
     </DashboardStyled>
   );
 }
+
+const LoadingScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 24px;
+`;
 
 const DashboardStyled = styled.div`
   .stats-con {
